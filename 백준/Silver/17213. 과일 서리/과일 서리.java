@@ -10,8 +10,8 @@ public class Main {
 		int N = Integer.parseInt(br.readLine());
 		int M = Integer.parseInt(br.readLine());
 		
-		int[][] pascal = new int[N + M][N + M];
-		for(int i = 0; i < N + M; i++) {
+		int[][] pascal = new int[M][M];
+		for(int i = 0; i < M; i++) {
 			for(int j = 0 ; j <= i; j++) {
 				if(i == 0 || j == 0) {
 					pascal[i][j] = 1;

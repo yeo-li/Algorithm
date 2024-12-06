@@ -20,16 +20,13 @@ public class Main {
 		}
 		
 		List<String> keySet = new ArrayList<>(words.keySet());
-		keySet.sort(new Comparator<String>() {
-			@Override
-			public int compare(String o1, String o2) {
-				if(words.get(o1) != words.get(o2)) {
-					return words.get(o2).compareTo(words.get(o1));
-				} else if(o1.length() != o2.length()) { // 단어가 긴 얘들끼릭
-					return o2.length() - o1.length();
-				} else {
-					return o1.compareTo(o2);
-				}
+		keySet.sort((o1, o2) -> {
+			if(words.get(o1) != words.get(o2)) {
+				return words.get(o2).compareTo(words.get(o1));
+			} else if(o1.length() != o2.length()) { // 단어가 긴 얘들끼릭
+				return o2.length() - o1.length();
+			} else {
+				return o1.compareTo(o2);
 			}
 		});
 		

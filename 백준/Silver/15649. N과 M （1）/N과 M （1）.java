@@ -3,19 +3,20 @@ import java.io.*;
 
 public class Main {
 	static final StringBuilder sb = new StringBuilder();
-	
+	static int N = 0;
+	static int M = 0;
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		
-		int N = Integer.parseInt(st.nextToken());
-		int M = Integer.parseInt(st.nextToken());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
 		
-		rNM(N, M, sb);
+		rNM(0);
 	} 
 	
-	private static void rNM(int N, int M, StringBuilder sb) {
-		if(sb.toString().length() == M) {
+	private static void rNM(int depth) {
+		if(depth == M) {
 			for(int i = 0; i < M ;i++) {
 				System.out.print(sb.toString().charAt(i) + " ");
 			}
@@ -26,7 +27,7 @@ public class Main {
 		for(int i = 1; i <= N; i++) {
 			if(sb.toString().contains(String.valueOf(i))) continue;
 			sb.append(i);
-			rNM(N, M, sb);
+			rNM(depth + 1);
 			sb.deleteCharAt(sb.length() - 1);
 		}
 	}

@@ -37,9 +37,6 @@ public class Main {
 			return;
 		}
 
-		for(int i = l + length/3 - 1; i < r - length/3 + 1; i++)
-			result[i] = false;
-		
 		cantorSet(l, l + length/3 - 1);
 		cantorSet(r - length/3 + 1, r);
 	}

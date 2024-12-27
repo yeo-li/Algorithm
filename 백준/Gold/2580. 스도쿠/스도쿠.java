@@ -41,22 +41,17 @@ public class Main {
 				if(sudoku[i][j] != 0) continue;
 				
 				// 재귀 시작
-				boolean flag = false;
 				for(int k = 1; k <= N; k++) {
 					if(isValidated(sudoku, k, i, j)) {
-						flag = true;
 						sudoku[i][j] = k;
 						boolean endResult = rSudoku();
 						if(endResult) return true;
 						sudoku[i][j] = 0;
-						flag = false;
 					}
 				}
 				
-				if(!flag) {
-//					System.out.println("잘못되먹은 스도쿠");
-					return false;
-				}
+				return false;
+				
 			}
 		}
 		

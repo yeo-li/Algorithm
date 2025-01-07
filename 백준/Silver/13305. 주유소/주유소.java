@@ -7,19 +7,19 @@ public class Main {
 		int N = Integer.parseInt(br.readLine());
 		
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		int[] edge = new int[N - 1];
+		long[] edge = new long[N - 1];
 		for(int i = 0; i < N - 1; i++) {
 			edge[i] = Integer.parseInt(st.nextToken());
 		}
 		
 		st = new StringTokenizer(br.readLine());
-		int[] vertex = new int[N];
+		long[] vertex = new long[N];
 		for(int i = 0; i < N; i++) {
 			vertex[i] = Integer.parseInt(st.nextToken());
 		}
 		
-		int result = 0;
-		int v = vertex[0];
+		long result = 0;
+		long v = vertex[0];
 		for(int i = 0; i < N - 1; i++) {
 			if(v > vertex[i]) v = vertex[i];
 			result += v * edge[i];

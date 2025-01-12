@@ -3,11 +3,11 @@ import java.io.*;
 
 public class Main {
 	static Deque<Integer> q = new ArrayDeque<>();
-	static int N;
+	
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
+        int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
         
         for(int i = 1; i <= N; i++) q.add(i);
@@ -32,8 +32,6 @@ public class Main {
         }
         
         System.out.println(rst);
-        
-        
     }
 
     private static void rotateRight() {
@@ -41,8 +39,4 @@ public class Main {
     	q.add(num);
     }
     
-    private static void rotateLeft() {
-    	int num = q.pollLast();
-    	q.addFirst(num);
-    }
 }

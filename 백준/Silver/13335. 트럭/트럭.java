@@ -22,7 +22,6 @@ public class Main {
         
         int bts = 0;
         int time = 0;
-        int cnt = 0;
         while(!trucks.isEmpty()) {
         	time++;
         	bts -= bridge.poll();
@@ -37,7 +36,6 @@ public class Main {
         }
         
         time += bridge.size();
-        
         
         System.out.println(time);
         

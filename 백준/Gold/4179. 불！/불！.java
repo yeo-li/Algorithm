@@ -3,7 +3,6 @@ import java.io.*;
 
 public class Main {
 	static int R, C;
-	static char[][] maze;
 	static int[][] fireMap;
 	static int[] dy = { 1, -1, 0, 0 };
 	static int[] dx = { 0, 0, 1, -1 };
@@ -15,23 +14,19 @@ public class Main {
 		C = Integer.parseInt(st.nextToken());
 
 		int startX = 0, startY = 0;
-		maze = new char[R][C];
 		fireMap = new int[R][C];
 		PriorityQueue<int[]> fireQueue = new PriorityQueue<>((o1, o2) -> o1[2] - o2[2]);
 		for (int i = 0; i < R; i++) {
 			char[] input = br.readLine().toCharArray();
 			for (int j = 0; j < C; j++) {
-				maze[i][j] = input[j];
-				if (maze[i][j] == '#') {
+				if (input[j] == '#') {
 					fireMap[i][j] = -1;
-				} else if (maze[i][j] == 'F') {
+				} else if (input[j] == 'F') {
 					fireQueue.offer(new int[] { i, j, 1 });
 					fireMap[i][j] = 1;
-				}
-				if (maze[i][j] == 'J') {
+				} else if (input[j] == 'J') {
 					startY = i;
 					startX = j;
-					maze[i][j] = '.';
 				}
 			}
 		}
@@ -83,7 +78,7 @@ public class Main {
 			for (int j = 0; j < 4; j++) {
 				int ny = now[0] + dy[j];
 				int nx = now[1] + dx[j];
-				if (isValidF(ny, nx) && fireMap[ny][nx] == 0) {
+				if (isValid(ny, nx) && fireMap[ny][nx] == 0) {
 					fireQueue.offer(new int[] { ny, nx, now[2] + 1 });
 					fireMap[ny][nx] = now[2] + 1;
 				}
@@ -96,14 +91,7 @@ public class Main {
 	}
 
 	public static boolean isValid(int y, int x) {
-		return 0 <= y && y < R && 0 <= x && x < C && maze[y][x] != '#';
-	}
-
-	public static boolean isValidF(int y, int x) {
 		return 0 <= y && y < R && 0 <= x && x < C && fireMap[y][x] != -1;
 	}
 
-	public static boolean isFire(int y, int x) {
-		return isValid(y, x) && maze[y][x] == 'F';
-	}
 }

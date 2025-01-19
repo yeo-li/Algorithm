@@ -18,14 +18,14 @@ public class Main {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			H = Integer.parseInt(st.nextToken()) + 2;
 			W = Integer.parseInt(st.nextToken()) + 2;
-			map = new char[H][W ];
+			map = new char[H][W];
 			visited = new boolean[H][W];
-			
-			for(int i = 0; i < W; i++) {
+
+			for (int i = 0; i < W; i++) {
 				map[0][i] = '.';
-				map[H-1][i] = '.';
+				map[H - 1][i] = '.';
 			}
-			
+
 			for (int i = 1; i < H - 1; i++) {
 				map[i][0] = '.';
 				map[i][W - 1] = '.';
@@ -33,7 +33,7 @@ public class Main {
 				for (int j = 1; j < W - 1; j++)
 					map[i][j] = input[j - 1];
 			}
-			
+
 			char[] keySet = br.readLine().toCharArray();
 			keys = new HashSet<>();
 			for (char key : keySet)
@@ -45,26 +45,7 @@ public class Main {
 		System.out.println(sb);
 	}
 
-	public static int cntMaxStealDoc() {
-		Deque<int[]> dq = findEntrance();
-		Deque<int[]> dq2 = new ArrayDeque<>();
-		int cnt = 0;
-		// 열쇠 먼저 찾고 그 다음 다시 BFS...
-		while (!dq.isEmpty()) {
-			int[] now = dq.poll();
-			bfs(now[0], now[1]);
-			dq2.offer(new int[] { now[0], now[1] });
-		}
-		while (!dq2.isEmpty()) {
-			int[] now = dq2.poll();
-			cnt += bfs(now[0], now[1]);
-		}
-
-		return cnt;
-	}
-
 	public static int bfs(int y, int x) {
-		initVisited();
 		int cnt = 0;
 		Deque<int[]> dq = new ArrayDeque<>();
 
@@ -89,7 +70,6 @@ public class Main {
 				cnt++;
 				map[now[0]][now[1]] = '.';
 			}
-				
 
 			for (int i = 0; i < 4; i++) {
 				int ny = now[0] + dy[i];
@@ -131,31 +111,8 @@ public class Main {
 		}
 	}
 
-	public static Deque<int[]> findEntrance() {
-		Deque<int[]> dq = new ArrayDeque<>();
-		for (int i = 0; i < W; i++) {
-			if (map[0][i] != '*')
-				dq.offer(new int[] { 0, i });
-			if (map[H - 1][i] != '*')
-				dq.offer(new int[] { H - 1, i });
-		}
-
-		for (int i = 1; i < H - 1; i++) {
-			if (map[i][0] != '*')
-				dq.offer(new int[] { i, 0 });
-			if (map[i][W - 1] != '*')
-				dq.offer(new int[] { i, W - 1 });
-		}
-
-		return dq;
-	}
-
 	public static boolean isEdge(int y, int x) {
 		return y == 0 || y == H - 1 && x == 0 || x == W - 1;
-	}
-
-	public static boolean isPassable(int y, int x) {
-		return isValid(y, x);
 	}
 
 	public static boolean isValid(int y, int x) {

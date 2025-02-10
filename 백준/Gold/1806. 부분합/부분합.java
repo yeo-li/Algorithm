@@ -14,8 +14,6 @@ public class Main {
 		for (int i = 0; i < N; i++)
 			arr[i] = Long.parseLong(st.nextToken());
 
-		// Arrays.sort(arr);
-
 		long[] dp = new long[N];
 		dp[0] = arr[0];
 		for (int i = 1; i < N; i++)

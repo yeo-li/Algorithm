@@ -13,6 +13,5 @@ public class Main {
 
 		Arrays.sort(arr);
 		System.out.println(arr[1]);
-	}
-
+    }
 }

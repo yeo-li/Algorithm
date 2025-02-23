@@ -11,7 +11,6 @@ public class Main {
 		N = Integer.parseInt(br.readLine());
 
 		Tree = new List[N];
-		// dp = new int[N];
 		for (int i = 0; i < N; i++)
 			Tree[i] = new ArrayList<>();
 
@@ -31,27 +30,23 @@ public class Main {
 	}
 
 	public static int postorder(int node, int depth) {
-		List<Integer> list = new ArrayList<>();
-		int[] dp = new int[N];
+		boolean[] dp = new boolean[N];
 		int max = 0;
-		// 자식들 중 가장 오래걸리는 녀석들 고르기
+		
 		for (int v : Tree[node]) {
 			int rst = postorder(v, depth + 1);
-			if (dp[rst] == 1) {
-				int num = rst + 1;
-				while (dp[num] != 0) {
-					num++;
-				}
-				dp[num] = 1;
-			} else
-				dp[rst] = 1;
+			if (dp[rst]) {
+				while (dp[rst])
+					rst++;
+			}
+			dp[rst] = true;
 		}
 
 		if (Tree[node].isEmpty())
 			return depth;
 
 		for (int i = N - 1; i >= 0; i--) {
-			if (dp[i] != 0) {
+			if (dp[i]) {
 				max = i;
 				break;
 			}

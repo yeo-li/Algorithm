@@ -1,15 +1,22 @@
-import java.util.*;
+
+// import java.util.*;
 import java.io.*;
+
 public class Main {
 	static int[][] dp;
+	static char[] A, B;
+	static StringBuilder sb;
+	static char[] lcs;
+	static int idx, i, j;
+	static BufferedReader br;
+
 	public static void main(String[] args) throws Exception {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		char[] A = br.readLine().toCharArray();
-		char[] B = br.readLine().toCharArray();
+		br = new BufferedReader(new InputStreamReader(System.in));
+		A = br.readLine().toCharArray();
+		B = br.readLine().toCharArray();
 		dp = new int[A.length + 1][B.length + 1];
-		int[] idxArr = new int[A.length - 1];
-		for (int i = 1; i <= A.length; i++) {
-			for (int j = 1; j <= B.length; j++) {
+		for (i = 1; i <= A.length; i++) {
+			for (j = 1; j <= B.length; j++) {
 				if (A[i - 1] == B[j - 1]) {
 					dp[i][j] = dp[i - 1][j - 1] + 1;
 				} else {
@@ -17,13 +24,14 @@ public class Main {
 				}
 			}
 		}
-		StringBuilder sb = new StringBuilder();
+		sb = new StringBuilder();
 		sb.append(dp[A.length][B.length]);
 		if (dp[A.length][B.length] != 0) {
 			sb.append("\n");
-			char[] lcs = new char[dp[A.length][B.length]];
-			int idx = dp[A.length][B.length] - 1;
-			int i = A.length, j = B.length;
+			lcs = new char[dp[A.length][B.length]];
+			idx = dp[A.length][B.length] - 1;
+			i = A.length;
+			j = B.length;
 			while (i > 0 && j > 0) {
 				if (A[i - 1] == B[j - 1]) {
 					lcs[idx] = A[i - 1];

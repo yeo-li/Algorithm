@@ -49,17 +49,18 @@ public class Main {
 				pq.add(node[1]);
 		}
 
-		boolean stop = false;
-		while (!pq.isEmpty() && !stop) {
+		while (!pq.isEmpty()) {
 			int e = pq.poll();
-			if (!visited[EDGE[e][0]] && visited[EDGE[e][1]]) {
-				totalWeight += EDGE[e][2];
-				prim(EDGE[e][0]);
-				break;
-			} else if (visited[EDGE[e][0]] && !visited[EDGE[e][1]]) {
-				totalWeight += EDGE[e][2];
-				prim(EDGE[e][1]);
-				break;
+
+			if (visited[EDGE[e][0]] && visited[EDGE[e][1]])
+				continue;
+
+			totalWeight += EDGE[e][2];
+			int node = !visited[EDGE[e][0]] ? EDGE[e][0] : EDGE[e][1];
+			visited[node] = true;
+			for (int[] vertex : G[node]) {
+				if (!visited[vertex[0]])
+					pq.add(vertex[1]);
 			}
 		}
 	}

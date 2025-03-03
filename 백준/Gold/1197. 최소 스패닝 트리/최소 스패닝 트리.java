@@ -15,7 +15,7 @@ public class Main {
 		int E = Integer.parseInt(st.nextToken());
 
 		G = new List[V + 1];
-		EDGE = new int[E + 1][3];
+		EDGE = new int[E][3];
 		visited = new boolean[V + 1];
 
 		for (int i = 1; i <= V; i++)
@@ -34,17 +34,10 @@ public class Main {
 		}
 
 		// find MST
-		prim(1);
-
-		System.out.println(totalWeight);
-
-	}
-
-	public static void prim(int v) {
-		visited[v] = true;
+		visited[1] = true;
 
 		// MST 트리의 모든 간선 추가
-		for (int[] node : G[v]) {
+		for (int[] node : G[1]) {
 			if (!visited[node[0]])
 				pq.add(node[1]);
 		}
@@ -63,5 +56,9 @@ public class Main {
 					pq.add(vertex[1]);
 			}
 		}
+
+		System.out.println(totalWeight);
+
 	}
+
 }

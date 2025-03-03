@@ -5,7 +5,6 @@ public class Main {
 	static List<int[]>[] G;
 	static int[][] EDGE;
 	static boolean[] visited;
-	static List<Integer> MST;
 	static long totalWeight = 0;
 	static PriorityQueue<Integer> pq = new PriorityQueue<>((o1, o2) -> EDGE[o1][2] - EDGE[o2][2]);
 

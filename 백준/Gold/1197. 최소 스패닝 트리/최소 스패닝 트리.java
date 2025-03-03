@@ -1,0 +1,67 @@
+import java.util.*;
+import java.io.*;
+
+public class Main {
+	static List<int[]>[] G;
+	static int[][] EDGE;
+	static boolean[] visited;
+	static List<Integer> MST;
+	static long totalWeight = 0;
+	static PriorityQueue<Integer> pq = new PriorityQueue<>((o1, o2) -> EDGE[o1][2] - EDGE[o2][2]);
+
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int V = Integer.parseInt(st.nextToken());
+		int E = Integer.parseInt(st.nextToken());
+
+		G = new List[V + 1];
+		EDGE = new int[E + 1][3];
+		visited = new boolean[V + 1];
+
+		for (int i = 1; i <= V; i++)
+			G[i] = new ArrayList<>();
+
+		for (int i = 0; i < E; i++) {
+			st = new StringTokenizer(br.readLine());
+			int v1 = Integer.parseInt(st.nextToken());
+			int v2 = Integer.parseInt(st.nextToken());
+			int w = Integer.parseInt(st.nextToken());
+
+			// i는 간선 번호
+			G[v1].add(new int[] { v2, i });
+			G[v2].add(new int[] { v1, i });
+			EDGE[i] = new int[] { v1, v2, w };
+		}
+
+		// find MST
+		prim(1);
+
+		System.out.println(totalWeight);
+
+	}
+
+	public static void prim(int v) {
+		visited[v] = true;
+
+		// MST 트리의 모든 간선 추가
+		for (int[] node : G[v]) {
+			if (!visited[node[0]])
+				pq.add(node[1]);
+		}
+
+		boolean stop = false;
+		while (!pq.isEmpty() && !stop) {
+			int e = pq.poll();
+			if (!visited[EDGE[e][0]] && visited[EDGE[e][1]]) {
+				totalWeight += EDGE[e][2];
+				prim(EDGE[e][0]);
+				break;
+			} else if (visited[EDGE[e][0]] && !visited[EDGE[e][1]]) {
+				totalWeight += EDGE[e][2];
+				prim(EDGE[e][1]);
+				break;
+			}
+		}
+	}
+}

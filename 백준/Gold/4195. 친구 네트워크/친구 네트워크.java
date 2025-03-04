@@ -7,11 +7,11 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int T = Integer.parseInt(br.readLine());
+		int T = read();
 
 		StringBuilder sb = new StringBuilder();
 		while (T-- > 0) {
-			int F = Integer.parseInt(br.readLine());
+			int F = read();
 			fList = new int[F * 2];
 			parent = new int[F * 2];
 			rank = new int[F * 2];
@@ -23,9 +23,9 @@ public class Main {
 
 			int idx = 0;
 			while (F-- > 0) {
-				StringTokenizer st = new StringTokenizer(br.readLine());
-				String name1 = st.nextToken();
-				String name2 = st.nextToken();
+				// StringTokenizer st = new StringTokenizer(br.readLine());
+				String name1 = readString();
+				String name2 = readString();
 				if (!friend.keySet().contains(name1)) {
 					friend.put(name1, idx);
 					idx++;
@@ -56,7 +56,7 @@ public class Main {
 			if (fList[rootX] > fList[rootY]) {
 				parent[rootY] = rootX;
 				fList[rootX] += fList[rootY];
-			} else if(fList[rootX] < fList[rootY]) {
+			} else if (fList[rootX] < fList[rootY]) {
 				parent[rootX] = rootY;
 				fList[rootY] += fList[rootX];
 			} else {
@@ -73,6 +73,21 @@ public class Main {
 			parent[x] = find(parent[x]);
 		}
 		return parent[x];
+	}
+
+	private static int read() throws Exception {
+		int c, n = System.in.read() & 15;
+		while ((c = System.in.read()) > 32)
+			n = (n << 3) + (n << 1) + (c & 15);
+		return n;
+	}
+
+	private static String readString() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		int c;
+		while ((c = System.in.read()) > 32)
+			sb.append((char) c);
+		return sb.toString();
 	}
 
 }

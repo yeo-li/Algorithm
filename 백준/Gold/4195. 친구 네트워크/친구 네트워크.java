@@ -3,7 +3,7 @@ import java.io.*;
 
 public class Main {
 	static Map<String, Integer> friend = new HashMap<>();
-	static int[] fList, parent;
+	static int[] fList, parent, rank;
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -14,9 +14,11 @@ public class Main {
 			int F = Integer.parseInt(br.readLine());
 			fList = new int[F * 2];
 			parent = new int[F * 2];
+			rank = new int[F * 2];
 			for (int i = 0; i < F * 2; i++) {
 				parent[i] = i;
 				fList[i] = 1;
+				rank[i] = 1;
 			}
 
 			int idx = 0;
@@ -51,8 +53,18 @@ public class Main {
 		int rootY = find(y);
 
 		if (rootX != rootY) {
-			parent[rootY] = rootX;
-			fList[rootX] += fList[rootY];
+			if (fList[rootX] > fList[rootY]) {
+				parent[rootY] = rootX;
+				fList[rootX] += fList[rootY];
+			} else if(fList[rootX] < fList[rootY]) {
+				parent[rootX] = rootY;
+				fList[rootY] += fList[rootX];
+			} else {
+				parent[rootX] = rootY;
+				fList[rootY] += fList[rootX];
+				rank[rootX] += 1;
+			}
+
 		}
 	}
 

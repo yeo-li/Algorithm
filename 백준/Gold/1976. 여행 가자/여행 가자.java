@@ -3,26 +3,26 @@ import java.io.*;
 public class Main {
 	static int[] parent, rank;
 	static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+	static int N, M, i, j, fc;
 
 	public static void main(String[] args) throws Exception {
-
-		int N = read();
-		int M = read();
+		N = read();
+		M = read();
 		parent = new int[N + 1];
 		rank = new int[N + 1];
-		for (int i = 1; i <= N; i++) {
+		for (i = 1; i <= N; i++) {
 			parent[i] = i;
 			rank[i] = 1;
 		}
-		for (int i = 1; i <= N; i++) {
-			for (int j = 1; j <= N; j++) {
+		for (i = 1; i <= N; i++) {
+			for (j = 1; j <= N; j++) {
 				if (read() == 1)
 					union(i, j);
 			}
 		}
-		int firstCity = find(read());
-		for (int i = 1; i < M; i++) {
-			if (find(read()) != firstCity) {
+		fc = find(read());
+		for (i = 1; i < M; i++) {
+			if (find(read()) != fc) {
 				bw.write("NO");
 				bw.flush();
 				bw.close();

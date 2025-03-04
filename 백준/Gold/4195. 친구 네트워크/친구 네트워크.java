@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	static Map<String, Integer> friend = new HashMap<>();
+	static Map<String, Integer> friend;
 	static int[] fList, parent, rank;
 
 	public static void main(String[] args) throws Exception {
@@ -11,6 +11,7 @@ public class Main {
 
 		StringBuilder sb = new StringBuilder();
 		while (T-- > 0) {
+			friend = new HashMap<>();
 			int F = read();
 			fList = new int[F * 2];
 			parent = new int[F * 2];
@@ -23,6 +24,7 @@ public class Main {
 
 			int idx = 0;
 			while (F-- > 0) {
+				
 				// StringTokenizer st = new StringTokenizer(br.readLine());
 				String name1 = readString();
 				String name2 = readString();

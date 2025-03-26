@@ -40,11 +40,12 @@ public class Main {
 	public static int prim(int[] yny) {
 		PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> o1[1] - o2[1]);
 		boolean[] visited = new boolean[N + 1];
+		int cnt = 0;
 		for (int e : yny) {
 			visited[e] = true;
+			cnt++;
 			for (int[] v : G[e]) {
-				// edge를 입력 받을 수 있다.
-				pq.offer(v); // V,W을 가진 edge
+				pq.offer(v);
 			}
 		}
 
@@ -52,6 +53,7 @@ public class Main {
 		while (!pq.isEmpty()) {
 			int[] edge = pq.poll();
 			if (!visited[edge[0]]) {
+				cnt++;
 				visited[edge[0]] = true;
 				total += edge[1];
 
@@ -60,34 +62,10 @@ public class Main {
 						pq.offer(v);
 				}
 			}
+			
+			if(cnt == N) break;
 		}
 
 		return total;
-
 	}
-
-	public static int[] dijkstra(int X) {
-		PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> o1[1] - o2[1]);
-		int[] result = new int[N + 1];
-		for (int i = 1; i <= N; i++)
-			result[i] = Integer.MAX_VALUE;
-		pq.offer(new int[] { X, 0 });
-		result[X] = 0;
-
-		while (!pq.isEmpty()) {
-			int[] now = pq.poll();
-
-			for (int[] v : G[now[0]]) {
-				int totalW = v[1] + now[1];
-				if (result[v[0]] > totalW) {
-					pq.offer(new int[] { v[0], totalW });
-					result[v[0]] = totalW;
-				}
-			}
-		}
-
-		return result;
-
-	}
-
 }

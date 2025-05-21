@@ -11,11 +11,12 @@ public class Main {
 		int S = Integer.parseInt(st.nextToken());
 		int K = Integer.parseInt(st.nextToken());
 		arr = new int[K];
+		int a = S/K;
 		for (int i = 0; i < K; i++)
-			arr[i] = 0;
+			arr[i] = a;
 
-		for (int i = 0; i < S; i++)
-			arr[i % K] += 1;
+		for (int i = 0; i < S%K; i++)
+			arr[i] += 1;
 
 		long rst = 1;
 		for (int i = 0; i < K; i++)

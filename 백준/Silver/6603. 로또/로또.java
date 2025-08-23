@@ -5,13 +5,14 @@ public class Main {
 	static int K;
 	static int[] nums, result;
 	static StringBuilder sb;
+	static StringTokenizer st;
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		sb = new StringBuilder();
 		while (true) {
-			StringTokenizer st = new StringTokenizer(br.readLine());
+			st = new StringTokenizer(br.readLine());
 			K = Integer.parseInt(st.nextToken());
 
 			if (K == 0)

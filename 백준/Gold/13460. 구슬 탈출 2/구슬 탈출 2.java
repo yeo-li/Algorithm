@@ -39,13 +39,11 @@ public class Main {
 	}
 
 	static class Capture {
-		public char[][] board;
 		public int depth;
 		public int[] red;
 		public int[] blue;
 
-		public Capture(char[][] board, int depth, int[] red, int[] blue) {
-			this.board = copy(board);
+		public Capture(int depth, int[] red, int[] blue) {
 			this.depth = depth;
 			this.red = red;
 			this.blue = blue;
@@ -56,7 +54,7 @@ public class Main {
 	public static int bfs() {
 		Deque<Capture> dq = new ArrayDeque<>();
 
-		dq.offer(new Capture(board, 0, new int[] { red[0], red[1] }, new int[] { blue[0], blue[1] }));
+		dq.offer(new Capture(0, new int[] { red[0], red[1] }, new int[] { blue[0], blue[1] }));
 
 		while (true) {
 			if (dq.isEmpty())
@@ -66,10 +64,10 @@ public class Main {
 				break;
 
 			for (int i = 0; i < 4; i++) {
-				Capture ncp = new Capture(cp.board, cp.depth + 1, new int[] { cp.red[0], cp.red[1] },
+				Capture ncp = new Capture(cp.depth + 1, new int[] { cp.red[0], cp.red[1] },
 						new int[] { cp.blue[0], cp.blue[1] });
 				int result = moveMarble(ncp, i);
-				if (result == 0 && !isSame(cp.board, ncp.board)) {
+				if (result == 0 && !isSame(cp, ncp)) {
 					dq.offer(ncp);
 				} else if (result == 1) {
 					return ncp.depth;
@@ -97,7 +95,6 @@ public class Main {
 				rx = board[0].length;
 				flag = true;
 			}
-				
 
 			int nry = ry + dy[direction];
 			int nrx = rx + dx[direction];
@@ -141,10 +138,10 @@ public class Main {
 			return 1;
 		}
 
-		cp.board[cp.red[0]][cp.red[1]] = '.';
-		cp.board[cp.blue[0]][cp.blue[1]] = '.';
-		cp.board[ry][rx] = 'R';
-		cp.board[by][bx] = 'B';
+		board[cp.red[0]][cp.red[1]] = '.';
+		board[cp.blue[0]][cp.blue[1]] = '.';
+		board[ry][rx] = 'R';
+		board[by][bx] = 'B';
 
 		cp.red[0] = ry;
 		cp.red[1] = rx;
@@ -170,15 +167,12 @@ public class Main {
 		return arr;
 	}
 
-	public static boolean isSame(char[][] board1, char[][] board2) {
-		for (int i = 0; i < board1.length; i++) {
-			for (int j = 0; j < board1[0].length; j++) {
-				if (board1[i][j] != board2[i][j])
-					return false;
-			}
-		}
+	public static boolean isSame(Capture cp1, Capture cp2) {
+		if (cp1.red[0] == cp2.red[0] && cp1.red[1] == cp2.red[1] && cp1.blue[0] == cp2.blue[0]
+				&& cp1.blue[1] == cp2.blue[1])
+			return true;
 
-		return true;
+		return false;
 	}
 
 }

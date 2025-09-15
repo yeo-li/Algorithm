@@ -37,21 +37,13 @@ public class Main {
 		while (k != 0) {
 			int mod = (int)(k%2);
 			int index = list.get(idx)[0];
-			if (mod == 0) { // 작은 값
-				
-				if (list.get(idx)[1] == 0) {
-					pw[index] = '1';
-				} else {
-					pw[index] = '2';
-				}
-			} else {
+			if (mod == 1) {
 				if (list.get(idx)[1] == 0) {
 					pw[index] = '6';
 				} else {
 					pw[index] = '7';
 				}
 			}
-
 			k /= 2;
 			idx++;
 		}

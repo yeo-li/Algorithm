@@ -17,14 +17,14 @@ public class Main {
 				board[i][j] = st.nextToken().equals("1");
 		}
 
-		dfs(new int[] { 0, 0 }, N);
+		dfs(0, 0, N);
 
 		System.out.println(white + "\n" + blue);
 	}
 
-	public static void dfs(int[] start, int length) {
-		if (isSameColor(start, length)) {
-			if (board[start[0]][start[1]])
+	public static void dfs(int y, int x, int length) {
+		if (isSameColor(y, x, length)) {
+			if (board[y][x])
 				blue++;
 			else
 				white++;
@@ -32,22 +32,21 @@ public class Main {
 		}
 
 		int len = length / 2;
-		dfs(new int[] { start[0], start[1] }, len);
-		dfs(new int[] { start[0] + len, start[1] }, len);
-		dfs(new int[] { start[0], start[1] + len }, len);
-		dfs(new int[] { start[0] + len, start[1] + len }, len);
+		dfs(y, x, len);
+		dfs(y + len, x, len);
+		dfs(y, x + len, len);
+		dfs(y + len, x + len, len);
+
 	}
 
-	public static boolean isSameColor(int[] start, int length) {
-
-		boolean color = board[start[0]][start[1]];
-		for (int i = start[0]; i < start[0] + length; i++) {
-			for (int j = start[1]; j < start[1] + length; j++) {
+	public static boolean isSameColor(int y, int x, int length) {
+		boolean color = board[y][x];
+		for (int i = y; i < y + length; i++) {
+			for (int j = x; j < x + length; j++) {
 				if (color != board[i][j])
 					return false;
 			}
 		}
-
 		return true;
 	}
 

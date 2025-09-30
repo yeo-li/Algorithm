@@ -3,62 +3,58 @@ import java.io.*;
 
 public class Main {
 	static List<int[]>[] G;
-	static int[][] EDGE;
-	static boolean[] visited;
-	static long totalWeight = 0;
-	static PriorityQueue<Integer> pq = new PriorityQueue<>((o1, o2) -> EDGE[o1][2] - EDGE[o2][2]);
+	static int V, E;
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		int V = Integer.parseInt(st.nextToken());
-		int E = Integer.parseInt(st.nextToken());
+		V = Integer.parseInt(st.nextToken());
+		E = Integer.parseInt(st.nextToken());
 
 		G = new List[V + 1];
-		EDGE = new int[E][3];
-		visited = new boolean[V + 1];
-
 		for (int i = 1; i <= V; i++)
 			G[i] = new ArrayList<>();
 
 		for (int i = 0; i < E; i++) {
 			st = new StringTokenizer(br.readLine());
-			int v1 = Integer.parseInt(st.nextToken());
-			int v2 = Integer.parseInt(st.nextToken());
-			int w = Integer.parseInt(st.nextToken());
-
-			// i는 간선 번호
-			G[v1].add(new int[] { v2, i });
-			G[v2].add(new int[] { v1, i });
-			EDGE[i] = new int[] { v1, v2, w };
+			int A = Integer.parseInt(st.nextToken());
+			int B = Integer.parseInt(st.nextToken());
+			int W = Integer.parseInt(st.nextToken());
+			G[A].add(new int[] { B, W });
+			G[B].add(new int[] { A, W });
 		}
 
-		// find MST
-		visited[1] = true;
+		System.out.println(prim());
 
-		// MST 트리의 모든 간선 추가
-		for (int[] node : G[1]) {
-			if (!visited[node[0]])
-				pq.add(node[1]);
+	}
+
+	public static long prim() {
+		long ans = 0;
+		boolean[] visited = new boolean[V + 1];
+
+		PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> o1[1] - o2[1]);
+		visited[1] = true;
+		for (int[] e : G[1]) {
+			if (!visited[e[0]])
+				pq.offer(e);
 		}
 
 		while (!pq.isEmpty()) {
-			int e = pq.poll();
-
-			if (visited[EDGE[e][0]] && visited[EDGE[e][1]])
+			int[] edge = pq.poll();
+			if (visited[edge[0]])
 				continue;
 
-			totalWeight += EDGE[e][2];
-			int node = !visited[EDGE[e][0]] ? EDGE[e][0] : EDGE[e][1];
-			visited[node] = true;
-			for (int[] vertex : G[node]) {
-				if (!visited[vertex[0]])
-					pq.add(vertex[1]);
+			ans += edge[1];
+			visited[edge[0]] = true;
+
+			for (int[] e : G[edge[0]]) {
+				if (!visited[e[0]])
+					pq.offer(e);
 			}
 		}
 
-		System.out.println(totalWeight);
-
+		return ans;
 	}
 
 }

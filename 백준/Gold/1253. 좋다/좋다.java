@@ -2,10 +2,13 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
+	static int[][] cogwheels = new int[5][8];
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
 		int N = Integer.parseInt(br.readLine());
+
 		long[] arr = new long[N];
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < N; i++)
@@ -23,11 +26,13 @@ public class Main {
 				} else if (r == i) {
 					r--;
 					continue;
-				} else if (arr[l] + arr[r] < arr[i]) {
+				}
+				
+				if (arr[l] + arr[r] < arr[i]) {
 					l++;
 				} else if (arr[l] + arr[r] > arr[i]) {
 					r--;
-				} else if (arr[l] + arr[r] == arr[i]) {
+				} else {
 					cnt++;
 					break;
 				}
@@ -36,4 +41,5 @@ public class Main {
 
 		System.out.println(cnt);
 	}
+
 }

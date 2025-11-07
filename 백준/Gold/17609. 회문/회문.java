@@ -2,52 +2,52 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
+	static char[] input;
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+		int T = Integer.parseInt(br.readLine());
+
 		StringBuilder sb = new StringBuilder();
-		int N = Integer.parseInt(br.readLine());
-		for(int i = 0; i < N; i++) {
-			String str = br.readLine();
-			sb.append(isP(str)).append("\n");
+		while (T-- > 0) {
+			input = br.readLine().toCharArray();
+			int l = 0, r = input.length - 1;
+
+			sb.append(isPalindrome(l, r, false)).append("\n");
 		}
-		
-		System.out.println(sb.toString());
+
+		System.out.println(sb);
 	}
-	
-	private static int isP(String str) {
-		int left = 0, right = str.length() - 1;
-		char[] arr = str.toCharArray();
-		
-		int cnt = 0;
-		while(left < right) {
-			if(arr[left] == arr[right]) {
+
+	public static int isPalindrome(int left, int right, boolean delete) {
+
+		int leftRst = 0;
+		int rightRst = 0;
+
+		while (left < right) {
+			if (input[left] == input[right]) {
 				left++;
 				right--;
 			} else {
-				boolean leftP = solve(arr, left+1, right);
-				boolean rightP = solve(arr, left, right-1);
-				if(leftP || rightP) {
-					return 1;
-				} else {
+				if (!delete) {
+					leftRst = isPalindrome(left + 1, right, true);
+					rightRst = isPalindrome(left, right - 1, true);
+					break;
+				} else
 					return 2;
-				}
+
 			}
 		}
-		
-		return 0;
-	} 
-	
-	private static boolean solve(char[] arr, int left, int right) {
-		while(left < right) {
-			if(arr[left] != arr[right]) {
-				return false;
-			}
-			left++;
-			right--;
+
+		if (left < right) {
+			return Math.min(leftRst, rightRst);
+		} else {
+			if (delete)
+				return 1;
+			return 0;
 		}
-		
-		return true;
+
 	}
-	
+
 }

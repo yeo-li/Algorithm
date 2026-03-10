@@ -11,15 +11,11 @@ public class Main {
 		result[1][0] = 0;
 		result[1][1] = 1;
 
-		for (int i = 2; i <= 40; i++) {
-			fibonacci(i);
-		}
-
 		int T = Integer.parseInt(br.readLine());
 		StringBuilder sb = new StringBuilder();
 		while (T-- > 0) {
 			int N = Integer.parseInt(br.readLine());
-			int[] rst = result[N];
+			int[] rst = fibonacci(N);
 			sb.append(rst[0] + " " + rst[1]).append("\n");
 		}
 

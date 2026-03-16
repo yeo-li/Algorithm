@@ -7,7 +7,6 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
 
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
@@ -16,8 +15,7 @@ public class Main {
 		board = new char[N][M];
 		for (int i = 0; i < N; i++) {
 			char[] input = br.readLine().toCharArray();
-			for (int j = 0; j < M; j++)
-				board[i][j] = input[j];
+			board[i] = input; // 꿀팁
 		}
 
 		int cnt = Integer.MAX_VALUE;
@@ -28,11 +26,7 @@ public class Main {
 			}
 		}
 
-		if (cnt == Integer.MAX_VALUE)
-			cnt = 0;
-
 		System.out.println(cnt);
-
 	}
 
 	public static int chess(int startY, int startX, int endY, int endX, char c1, char c2) {

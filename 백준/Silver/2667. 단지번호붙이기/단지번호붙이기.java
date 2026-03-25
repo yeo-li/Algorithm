@@ -1,22 +1,23 @@
 import java.util.*;
 import java.io.*;
-import java.math.*;
 
 public class Main {
+	static int[][] board;
 	static int N;
-	static boolean[][] board;
-	static int[] dx = { 0, 0, 1, -1 };
-	static int[] dy = { 1, -1, 0, 0 };
+	static int[] dy = { 0, 0, 1, -1 };
+	static int[] dx = { 1, -1, 0, 0 };
 	static StringBuilder sb = new StringBuilder();
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
 		N = Integer.parseInt(br.readLine());
-		board = new boolean[N][N];
+		board = new int[N][N];
+
 		for (int i = 0; i < N; i++) {
 			char[] input = br.readLine().toCharArray();
 			for (int j = 0; j < N; j++)
-				board[i][j] = input[j] == '0' ? false : true;
+				board[i][j] = Integer.parseInt(String.valueOf(input[j]));
 		}
 
 		bfs();
@@ -26,45 +27,46 @@ public class Main {
 
 	public static void bfs() {
 		boolean[][] visited = new boolean[N][N];
-		PriorityQueue<Integer> pq = new PriorityQueue<>();
-		int fullcnt = 0;
-		for (int t = 0; t < N * N; t++) {
-			int y = t / N;
-			int x = t % N;
+		Deque<int[]> dq = new ArrayDeque<>();
+		int cnt = 0;
+		List<Integer> rst = new ArrayList<>();
+		for (int p = 0; p < N * N; p++) {
+			int y = p / N;
+			int x = p % N;
 
-			if (visited[y][x] || !board[y][x])
+			if (visited[y][x] || board[y][x] == 0)
 				continue;
 
-			Deque<int[]> dq = new ArrayDeque<>();
 			dq.offer(new int[] { y, x });
 			visited[y][x] = true;
-			int cnt = 1;
-			fullcnt++;
+			cnt++;
+
+			int weight = 1;
 			while (!dq.isEmpty()) {
-				int[] now = dq.poll();
+				int[] yx = dq.poll();
 
 				for (int i = 0; i < 4; i++) {
-					int ny = now[0] + dy[i];
-					int nx = now[1] + dx[i];
+					int ny = yx[0] + dy[i];
+					int nx = yx[1] + dx[i];
 
-					if (isPossible(ny, nx) && !visited[ny][nx] && board[ny][nx]) {
+					if (isPossible(ny, nx) && !visited[ny][nx]) {
 						dq.offer(new int[] { ny, nx });
+						weight++;
 						visited[ny][nx] = true;
-						cnt++;
 					}
 				}
 			}
 
-			pq.offer(cnt);
+			rst.add(weight);
 		}
 
-		sb.append(fullcnt).append("\n");
-		while (!pq.isEmpty())
-			sb.append(pq.poll()).append("\n");
+		Collections.sort(rst);
+		sb.append(cnt).append("\n");
+		for (int num : rst)
+			sb.append(num).append("\n");
 	}
 
 	public static boolean isPossible(int y, int x) {
-		return 0 <= x && x < N && 0 <= y && y < N;
+		return 0 <= x && x < N && 0 <= y && y < N && board[y][x] != 0;
 	}
-
 }

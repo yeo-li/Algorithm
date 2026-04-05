@@ -2,21 +2,26 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	
 	static final StringBuilder sb = new StringBuilder();
-	
-	public static void main(String[] args) throws Exception {
+
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
-		sb.append((int)(Math.pow(2, N) - 1)).append("\n");
-		rHanoi(N, 1, 3, 2);
-		System.out.println(sb.toString());
+
+		sb.append((int) Math.pow(2, N) - 1).append("\n");
+		dfs(N, 1, 2, 3);
+		System.out.println(sb);
 	}
-	
-	private static void rHanoi(int N, int from, int to, int temp) {
-		if(N == 0) return;
-		rHanoi(N-1, from, temp, to);
+
+	public static void dfs(int n, int from, int via, int to) {
+		if (n == 1) {
+			sb.append(from + " " + to).append("\n");
+			return;
+		}
+
+		dfs(n - 1, from, to, via);
 		sb.append(from + " " + to).append("\n");
-		rHanoi(N-1, temp, to, from);	
+		dfs(n - 1, via, from, to);
 	}
+
 }

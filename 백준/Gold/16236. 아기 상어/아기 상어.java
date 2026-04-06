@@ -2,66 +2,51 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	static int N, size = 2;
-	static int[][] sea, dis;
-	static int[] dy = { 1, -1, 0, 0 };
-	static int[] dx = { 0, 0, 1, -1 };
+	static int N, size;
+	static int[][] board;
+	static int[] dy = { 0, 0, -1, 1 };
+	static int[] dx = { 1, -1, 0, 0 };
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+		size = 2;
 		N = Integer.parseInt(br.readLine());
-		sea = new int[N][N];
-		dis = new int[N][N];
-		int y = 0, x = 0;
+		board = new int[N][N];
+
 		for (int i = 0; i < N; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			for (int j = 0; j < N; j++) {
-				sea[i][j] = Integer.parseInt(st.nextToken());
-				if (sea[i][j] == 9) { // 상어 위치 찾기
-					sea[i][j] = 0;
-					y = i;
-					x = j;
-				}
-			}
+			for (int j = 0; j < N; j++)
+				board[i][j] = Integer.parseInt(st.nextToken());
 		}
 
-		System.out.println(moveBabyShark(y, x));
+		System.out.println(solve());
 	}
 
-	public static int moveBabyShark(int y, int x) {
-		size = 2;
+	public static int solve() {
 		int time = 0;
-		int fishCnt = 0;
-		int startY = y;
-		int startX = x;
+		int food = 0;
 		while (true) {
-			int[] now = bfs(startY, startX);
-			if (now == null)
+			int[] now = bfs();
+			if (now == null) {
 				break;
-
-			int ny = now[0];
-			int nx = now[1];
-			time += now[2];
-
-			sea[ny][nx] = 0;
-			fishCnt++;
-
-			if (fishCnt == size) {
-				fishCnt = 0;
-				size++;
 			}
-			
-			startY = now[0];
-			startX = now[1];
+			time += now[2];
+			food++;
+			board[now[0]][now[1]] = 9;
+			if (size == food) {
+				size++;
+				food = 0;
+			}
 		}
-		
-		
 
 		return time;
 	}
 
-	public static int[] bfs(int y, int x) {
+	public static int[] bfs() {
 		boolean[][] visited = new boolean[N][N];
+
+		Deque<int[]> dq = new ArrayDeque<>();
 		PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> {
 			if (o1[2] != o2[2])
 				return o1[2] - o2[2];
@@ -70,40 +55,38 @@ public class Main {
 			return o1[1] - o2[1];
 		});
 
-		Deque<int[]> dq = new ArrayDeque<>();
-		dq.offer(new int[] { y, x, 0 });
-		visited[y][x] = true;
-		while (!dq.isEmpty()) {
-			int[] now = dq.poll();
-			for (int i = 0; i < 4; i++) {
-				int ny = now[0] + dy[i];
-				int nx = now[1] + dx[i];
+		for (int p = 0; p < N * N; p++) {
+			int y = p / N;
+			int x = p % N;
+			if (board[y][x] == 9) {
+				dq.offer(new int[] { y, x, 0 });
+				board[y][x] = 0;
+				visited[y][x] = true;
+				break;
+			}
+		}
 
-				if (isPassable(ny, nx) && !visited[ny][nx]) {
+		while (!dq.isEmpty()) {
+			int[] yx = dq.poll();
+			if (board[yx[0]][yx[1]] < size && board[yx[0]][yx[1]] != 0) {
+				pq.offer(yx);
+			}
+
+			for (int i = 0; i < 4; i++) {
+				int ny = yx[0] + dy[i];
+				int nx = yx[1] + dx[i];
+				if (isPossible(ny, nx) && !visited[ny][nx]) {
+					dq.offer(new int[] { ny, nx, yx[2] + 1 });
 					visited[ny][nx] = true;
-					// 먹을 수 있는건 따로 담기
-					if (isEdible(ny, nx))
-						pq.offer(new int[] { ny, nx, now[2] + 1 });
-					// 이와 별개로 지나갈 수 있는 얘도 따로 담기
-					dq.offer(new int[] { ny, nx, now[2] + 1 });
 				}
 			}
 		}
 
-		if (pq.isEmpty())
-			return null;
 		return pq.poll();
 	}
 
-	public static boolean isValid(int y, int x) {
-		return 0 <= y && y < N && 0 <= x && x < N;
+	public static boolean isPossible(int y, int x) {
+		return 0 <= x && x < N && 0 <= y && y < N && board[y][x] <= size;
 	}
 
-	public static boolean isEdible(int y, int x) {
-		return isValid(y, x) && sea[y][x] < size && sea[y][x] != 0;
-	}
-
-	public static boolean isPassable(int y, int x) {
-		return isValid(y, x) && sea[y][x] <= size;
-	}
 }

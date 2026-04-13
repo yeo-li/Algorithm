@@ -1,155 +1,87 @@
 import java.util.*;
 import java.io.*;
 
-
 public class Main {
-	static int[][] sudoku;
-	
-	static final int N = 9;
-	public static void main(String[] args) throws Exception {
+	static int[][] board = new int[9][9];
+	static int N = 0;
+	static List<int[]> pos = new ArrayList<>();
+	static boolean end = false;
+	static StringBuilder sb = new StringBuilder();
+
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		sudoku = new int[N][N];
-		
-		for(int i = 0; i < N; i++) {
+
+		for (int i = 0; i < 9; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			for(int j = 0; j< N; j++) {
-				sudoku[i][j] = Integer.parseInt(st.nextToken());
-			}
-		}
-		
-		rSudoku();
-		
-		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < N; j++) {
-				sb.append(sudoku[i][j] + " ");
-			}
-			sb.append("\n");
-		}
-		
-		System.out.println(sb.toString());
-		
-	}
-	
-	private static boolean rSudoku() {
-		if(endGame()) {
-			return true;
-		}
-		
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < N; j++) {
-				if(sudoku[i][j] != 0) continue;
-				
-				// 재귀 시작
-				for(int k = 1; k <= N; k++) {
-					if(isValidated(sudoku, k, i, j)) {
-						sudoku[i][j] = k;
-						boolean endResult = rSudoku();
-						if(endResult) return true;
-						sudoku[i][j] = 0;
-					}
+			for (int j = 0; j < 9; j++) {
+				board[i][j] = Integer.parseInt(st.nextToken());
+				if (board[i][j] == 0) {
+					N++;
+					pos.add(new int[] { i, j });
 				}
-				
+			}
+		}
+
+		dfs(0);
+
+		System.out.println(sb);
+	}
+
+	public static void dfs(int idx) {
+		if (idx == N) {
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 9; j++)
+					sb.append(board[i][j]).append(" ");
+				sb.append("\n");
+			}
+			end = true;
+			return;
+		}
+
+		int[] yx = pos.get(idx);
+
+		for (int i = 1; i <= 9; i++) {
+			if (isPossible(idx, i)) {
+				board[yx[0]][yx[1]] = i;
+				dfs(idx + 1);
+			}
+			if (end)
+				return;
+			board[yx[0]][yx[1]] = 0;
+		}
+	}
+
+	public static boolean isPossible(int idx, int num) {
+		int[] yx = pos.get(idx);
+		int y = 0;
+		int x = 0;
+
+		for (int i = 0; i < 9; i++) {
+			if (board[i][yx[1]] == num || board[yx[0]][i] == num)
 				return false;
-				
-			}
 		}
-		
-		return false;
-	}
-	
-	private static boolean endGame() {
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < N; j++) {
-				if(sudoku[i][j] == 0) {
+
+		if (yx[0] < 3)
+			y = 0;
+		else if (yx[0] < 6)
+			y = 3;
+		else
+			y = 6;
+
+		if (yx[1] < 3)
+			x = 0;
+		else if (yx[1] < 6)
+			x = 3;
+		else
+			x = 6;
+
+		for (int i = y; i < y + 3; i++) {
+			for (int j = x; j < x + 3; j++)
+				if (board[i][j] == num)
 					return false;
-				}
-			}
 		}
-		
+
 		return true;
 	}
-	
-	
-	private static boolean isValidated(int[][] arr, int num, int I, int J) {
-		arr[I][J] = num;
-		
-		boolean[] numbers = new boolean[N + 1];
-		
-		// 세로 판단
-		for(int i = 0; i < N; i++) {
-			if(arr[i][J] == 0) continue;
-			if(!numbers[arr[i][J]]) {
-				numbers[arr[i][J]] = true;
-			} else {
-				arr[I][J] = 0;
-				return false;
-			}
-		}
-		
-		// 초기화
-		for(int i = 0; i <= N; i++)
-			numbers[i] = false;
-		
-		// 가로 판단
-		for(int j = 0; j < N; j++) {
-			if(arr[I][j] == 0) continue;
-			if(!numbers[arr[I][j]]) {
-				numbers[arr[I][j]] = true;
-			} else {
-				arr[I][J] = 0;
-				return false;
-			}
-		}
-		
-		// 초기화
-		for(int i = 0; i <= N; i++)
-			numbers[i] = false;
-		
-		int[] iRange = findRange(findPosition(I));
-		int[] jRange = findRange(findPosition(J));
-		
-		for(int i : iRange) {
-			for(int j : jRange) {
-				if(arr[i][j] == 0) continue;
-				if(!numbers[arr[i][j]]) {
-					numbers[arr[i][j]] = true;
-				} else {
-					arr[I][J] = 0;
-					return false;
-				}
-			}
-		}
-		
-		arr[I][J] = 0;
-		return true;
-	}
-	
-	private static int findPosition(int idx) {
-		if(idx <= 2) {
-			return 0;
-		} else if(idx <= 5) {
-			return 1;
-		}
-		return 2;
-	}
-	
-	private static int[] findRange(int P) {
-		int[] range = new int[3];
-		if(P == 0) {
-			for(int i = 0; i < 3; i++) {
-				range[i] = i;
-			}
-		} else if(P == 1) {
-			for(int i = 0; i < 3; i++) {
-				range[i] = i + 3;
-			}
-		} else {
-			for(int i = 0; i < 3; i++) {
-				range[i] = i + 6;
-			}
-		}
-		
-		return range;
-    }	
+
 }

@@ -2,26 +2,20 @@ import java.util.*;
 
 public class Solution {
     public int[] solution(int []arr) {
-        Stack<Integer> stack = new Stack<>();
+        Deque<Integer> dq = new ArrayDeque<>();
         
-        stack.push(arr[arr.length-1]);
-        for(int i = arr.length-2; i >= 0 ; i--) {
-            Integer elem = stack.pop();
-            if(elem != arr[i]){
-                stack.push(elem);
-            }
-            stack.push(arr[i]);
+        for(int num : arr) {
+            if(!dq.isEmpty() && dq.peek() == num) 
+                continue;
+            
+            dq.push(num);
         }
         
-        int[] answer = new int[stack.size()];
-        int idx = 0;
-        while(!stack.isEmpty()) {
-            answer[idx] = stack.pop();
-            idx++;
+        int[] ans = new int[dq.size()];
+        for(int i = ans.length - 1; i >= 0 ; i--) {
+            ans[i] = dq.pop();
         }
         
-        
-        
-        return answer;
+        return ans;
     }
 }

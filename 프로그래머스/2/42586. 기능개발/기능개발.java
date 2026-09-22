@@ -15,7 +15,6 @@ class Solution {
         int number = diff[0];
         boolean isEnd = true;
         for(int i = 1; i < progresses.length; i++) {
-            if(i == progresses.length) break;
             if(number >= diff[i]) {
                 cnt++;
                 isEnd = false;
